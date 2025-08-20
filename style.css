@@ -753,6 +753,7 @@ body {
     display: flex;
     gap: 15px;
     flex-wrap: wrap;
+    margin-top: 30px;
 }
 
 .social-btn {
