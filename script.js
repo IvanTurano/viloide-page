@@ -1,0 +1,296 @@
+// Navegación móvil
+const navToggle = document.querySelector('.nav-toggle');
+const navMenu = document.querySelector('.nav-menu');
+const navLinks = document.querySelectorAll('.nav-menu a');
+
+// Toggle del menú móvil
+navToggle.addEventListener('click', () => {
+    navToggle.classList.toggle('active');
+    navMenu.classList.toggle('active');
+    document.body.classList.toggle('nav-open');
+});
+
+// Cerrar menú al hacer click en un enlace
+navLinks.forEach(link => {
+    link.addEventListener('click', () => {
+        navToggle.classList.remove('active');
+        navMenu.classList.remove('active');
+        document.body.classList.remove('nav-open');
+    });
+});
+
+// Cerrar menú al hacer click fuera de él
+document.addEventListener('click', (e) => {
+    if (!navToggle.contains(e.target) && !navMenu.contains(e.target)) {
+        navToggle.classList.remove('active');
+        navMenu.classList.remove('active');
+        document.body.classList.remove('nav-open');
+    }
+});
+
+// Navegación suave mejorada
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+            const headerHeight = document.querySelector('.hero-header').offsetHeight;
+            const targetPosition = target.offsetTop - headerHeight;
+            
+            window.scrollTo({
+                top: targetPosition,
+                behavior: 'smooth'
+            });
+        }
+    });
+});
+
+// Efecto parallax para el hero
+window.addEventListener('scroll', () => {
+    const scrolled = window.pageYOffset;
+    const hero = document.querySelector('.hero');
+    const rate = scrolled * -0.5;
+    
+    if (hero) {
+        hero.style.transform = `translateY(${rate}px)`;
+    }
+});
+
+
+
+// Header transparente/sólido según scroll
+const header = document.querySelector('.hero-header');
+let lastScrollTop = 0;
+
+window.addEventListener('scroll', () => {
+    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    
+    if (scrollTop > 100) {
+        header.classList.add('scrolled');
+    } else {
+        header.classList.remove('scrolled');
+    }
+    
+    // Ocultar/mostrar header al hacer scroll
+    if (scrollTop > lastScrollTop && scrollTop > 200) {
+        header.style.transform = 'translateY(-100%)';
+    } else {
+        header.style.transform = 'translateY(0)';
+    }
+    
+    lastScrollTop = scrollTop;
+});
+
+// Contador animado para números (si se agregan estadísticas)
+function animateCounter(element, target, duration = 2000) {
+    let start = 0;
+    const increment = target / (duration / 16);
+    
+    const timer = setInterval(() => {
+        start += increment;
+        element.textContent = Math.floor(start);
+        
+        if (start >= target) {
+            element.textContent = target;
+            clearInterval(timer);
+        }
+    }, 16);
+}
+
+// Lazy loading para imágenes
+const imageObserver = new IntersectionObserver((entries, observer) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            const img = entry.target;
+            img.src = img.dataset.src;
+            img.classList.remove('lazy');
+            imageObserver.unobserve(img);
+        }
+    });
+});
+
+document.querySelectorAll('img[data-src]').forEach(img => {
+    imageObserver.observe(img);
+});
+
+// Prevenir scroll cuando el menú móvil está abierto
+const style = document.createElement('style');
+style.textContent = `
+    body.nav-open {
+        overflow: hidden;
+    }
+    
+    .hero-header {
+        transition: all 0.3s ease;
+    }
+    
+    .hero-header.scrolled {
+        background: rgba(7, 51, 74, 0.95);
+        backdrop-filter: blur(20px);
+    }
+    
+
+    
+    .lazy {
+        filter: blur(5px);
+        transition: filter 0.3s;
+    }
+`;
+document.head.appendChild(style);
+
+// Inicialización cuando el DOM está listo
+document.addEventListener('DOMContentLoaded', () => {
+    // Agregar clase para animaciones CSS
+    document.body.classList.add('js-loaded');
+    
+    // Precargar imágenes críticas
+    const criticalImages = ['assets/hero.jpg', 'assets/logo.png'];
+    criticalImages.forEach(src => {
+        const img = new Image();
+        img.src = src;
+    });
+});
+
+// Manejo de errores para imágenes
+document.querySelectorAll('img').forEach(img => {
+    img.addEventListener('error', function() {
+        this.style.display = 'none';
+        console.warn(`Error cargando imagen: ${this.src}`);
+    });
+});
+
+// Carrusel de clientes
+const clientCarousel = () => {
+    const track = document.querySelector('.clients-track');
+    const slides = Array.from(document.querySelectorAll('.client-slide'));
+    
+    if (!track || !slides.length) return;
+    
+    const slideWidth = slides[0].offsetWidth;
+    const totalWidth = slideWidth * slides.length;
+    
+    // Duplicar slides para efecto infinito
+    track.innerHTML += track.innerHTML;
+    
+    let currentPosition = 0;
+    const speed = 1; // px por frame
+    
+    const animate = () => {
+        currentPosition -= speed;
+        if (currentPosition <= -totalWidth) {
+            currentPosition = 0;
+        }
+        track.style.transform = `translateX(${currentPosition}px)`;
+        requestAnimationFrame(animate);
+    };
+    
+    // Pausar al hacer hover
+    track.addEventListener('mouseenter', () => {
+        speed = 0;
+    });
+    
+    track.addEventListener('mouseleave', () => {
+        speed = 1;
+    });
+    
+    animate();
+};
+
+// Inicializar carrusel cuando el DOM esté listo
+document.addEventListener('DOMContentLoaded', clientCarousel);
+
+// Performance: Throttle para eventos de scroll
+function throttle(func, limit) {
+    let inThrottle;
+    return function() {
+        const args = arguments;
+        const context = this;
+        if (!inThrottle) {
+            func.apply(context, args);
+            inThrottle = true;
+            setTimeout(() => inThrottle = false, limit);
+        }
+    }
+}
+
+// Aplicar throttle a eventos de scroll costosos
+const throttledScrollHandler = throttle(() => {
+    // Aquí van los handlers de scroll que necesiten throttling
+}, 16);
+
+window.addEventListener('scroll', throttledScrollHandler);
+
+// Formulario de contacto
+document.addEventListener('DOMContentLoaded', () => {
+    const contactForm = document.getElementById('contactForm');
+    
+    if (contactForm) {
+        contactForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            // Obtener datos del formulario
+            const formData = new FormData(contactForm);
+            const data = {
+                name: formData.get('name'),
+                email: formData.get('email'),
+                phone: formData.get('phone'),
+                company: formData.get('company'),
+                message: formData.get('message')
+            };
+            
+            // Validación básica
+            if (!data.name || !data.email || !data.message) {
+                alert('Por favor, completá todos los campos obligatorios.');
+                return;
+            }
+            
+            // Simular envío (aquí conectarías con tu backend)
+            const submitBtn = contactForm.querySelector('button[type="submit"]');
+            const originalText = submitBtn.textContent;
+            
+            submitBtn.textContent = 'Enviando...';
+            submitBtn.disabled = true;
+            
+            // Simular delay de envío
+            setTimeout(() => {
+                alert('¡Gracias por tu consulta! Te contactaremos pronto.');
+                contactForm.reset();
+                submitBtn.textContent = originalText;
+                submitBtn.disabled = false;
+            }, 1500);
+        });
+    }
+    
+    // Animaciones para las nuevas secciones
+    const newSectionObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('animate-in');
+            }
+        });
+    }, {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    });
+    
+    // Observar elementos de las nuevas secciones
+    document.querySelectorAll('.differentiators-list li, .contact-form, .contact-details, .social-links, .map-container').forEach(el => {
+        newSectionObserver.observe(el);
+    });
+});
+
+// Pausar carrusel al hacer hover
+document.addEventListener('DOMContentLoaded', () => {
+    const carousel = document.querySelector('.clients-carousel');
+    const track = document.querySelector('.clients-track');
+    
+    if (carousel && track) {
+        carousel.addEventListener('mouseenter', () => {
+            track.style.animationPlayState = 'paused';
+        });
+        
+        carousel.addEventListener('mouseleave', () => {
+            track.style.animationPlayState = 'running';
+        });
+    }
+});
