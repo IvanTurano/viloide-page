@@ -36,7 +36,6 @@ body {
     background: linear-gradient(rgba(7, 51, 74, 0.7), rgba(7, 51, 74, 0.7)), url(assets/hero.jpg);
     background-size: cover;
     background-position: center;
-    background-attachment: fixed;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
@@ -881,6 +880,12 @@ body {
 
 
 @media (max-width: 768px) {
+    body.nav-open {
+        overflow: hidden;
+        position: fixed;
+        width: 100%;
+    }
+    
     .hero-header {
         padding: 15px 20px;
         position: relative;
@@ -890,8 +895,10 @@ body {
     .nav-menu {
         position: fixed;
         top: 0;
-        right: -100%;
-        width: 100%;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        width: 100vw;
         height: 100vh;
         background: var(--color-primario);
         flex-direction: column;
@@ -900,10 +907,12 @@ body {
         transition: var(--transition);
         z-index: 1000;
         display: flex;
+        transform: translateX(100%);
+        overflow: hidden;
     }
     
     .nav-menu.active {
-        right: 0;
+        transform: translateX(0);
     }
     
     .nav-toggle {
