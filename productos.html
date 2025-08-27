@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Catálogo de productos Viloide SRL - Bulonería especializada, aleaciones especiales y elementos de fijación de alta resistencia">
+    <meta name="keywords" content="catálogo productos, bulonería, tornillos, tuercas, aleaciones especiales, ASTM, Viloide SRL">
+    <title>Productos - Viloide SRL</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+</head>
+<body>
+    <main>
+    <section class="hero" id="inicio">
+      <header class="hero-header">
+        <div class="logo">
+          <img src="assets/logoSinFondo.png" alt="Viloide SRL - Logo empresa de bulonería" />
+        </div>
+        <nav class="navbar" role="navigation" aria-label="Navegación principal">
+          <button class="nav-toggle" aria-label="Abrir menú de navegación">
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+          <ul class="nav-menu">
+            <li><a href="index.html">Inicio</a></li>
+            <li><a href="index.html#sobre-nosotros">Sobre Nosotros</a></li>
+            <li><a href="#pdf-viewer-section">Productos</a></li>
+            <li><a href="index.html#contacto-form">Contacto</a></li>
+          </ul>
+        </nav>
+      </header>
+
+      <div class="hero-content">
+        <div class="hero-content-text">
+          <h1 class="hero-title">Productos</h1>
+          <img src="assets/logoSinFondo.png" alt="Viloide SRL - Especialistas en bulonería industrial" />
+          <p class="hero-subtitle">Nuestro catálogo de productos</p>
+        </div>
+        <div class="hero-content-buttons">
+          <a href="#pdf-viewer-section" class="btn-primary btn-hero">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <polyline points="14,2 14,8 20,8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span>Ver catálogo</span>
+          </a>
+          <a href="index.html#sobre-nosotros" class="btn-secondary btn-hero">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M13 2L3 14H12L11 22L21 10H12L13 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span>Información</span>
+          </a>
+          <a href="index.html#contacto" class="btn-terciary btn-hero">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M21 15C21 15.5304 20.7893 16.0391 20.4142 16.4142C20.0391 16.7893 19.5304 17 19 17H7L3 21V5C3 4.46957 3.21071 3.96086 3.58579 3.58579C3.96086 3.21071 4.46957 3 5 3H19C19.5304 3 20.0391 3.21071 20.4142 3.58579C20.7893 3.96086 21 4.46957 21 5V15Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span>Contáctanos</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+        <section class="pdf-viewer-section" id="pdf-viewer-section">
+            <div class="container">
+                <div class="pdf-controls">
+                    <div class="product-selector">
+                        <label for="productSelect">Seleccionar Producto:</label>
+                        <select id="productSelect" class="product-select">
+                            <option value="">-- Seleccione un producto --</option>
+                            <option value="assets/productos/ALEACIONES ESPECIALES.pdf">Aleaciones Especiales</option>
+                            <option value="assets/productos/ARANDELAS ASTM A436 T1.pdf">Arandelas ASTM A436 T1</option>
+                            <option value="assets/productos/BULONERIA.pdf">Bulonería</option>
+                            <option value="assets/productos/ESPARRAGOS ASTM A193 B7.pdf">Espárragos ASTM A193 B7</option>
+                            <option value="assets/productos/ESPARRAGOS CON 2 TUERCAS A193 B7 - A194 2H.pdf">Espárragos con 2 Tuercas A193 B7 - A194 2H</option>
+                            <option value="assets/productos/TUERCAS HEXAGONALES ASTM A194 2H.pdf">Tuercas Hexagonales ASTM A194 2H</option>
+                            <option value="assets/productos/VARILLAS ROSCADAS ASTM A193 B7.pdf">Varillas Roscadas ASTM A193 B7</option>
+                        </select>
+                    </div>
+                    
+                    <div class="pdf-navigation" id="pdfNavigation" style="display: none;">
+                        <button id="prevPage" class="nav-btn">← Anterior</button>
+                        <span class="page-info">
+                            Página <span id="currentPage">1</span> de <span id="totalPages">1</span>
+                        </span>
+                        <button id="nextPage" class="nav-btn">Siguiente →</button>
+                    </div>
+                    
+                    <div class="pdf-zoom">
+                        <button id="zoomOut" class="zoom-btn">-</button>
+                        <span id="zoomLevel">100%</span>
+                        <button id="zoomIn" class="zoom-btn">+</button>
+                    </div>
+                </div>
+
+                <div class="pdf-container">
+                    <div id="pdfViewer" class="pdf-viewer">
+                        <div class="pdf-placeholder">
+                            <div class="placeholder-content">
+                                <svg width="80" height="80" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <polyline points="14,2 14,8 20,8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <line x1="16" y1="13" x2="8" y2="13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <line x1="16" y1="17" x2="8" y2="17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                                <h3>Seleccione un producto</h3>
+                                <p>Elija un producto del menú desplegable para ver su documentación técnica</p>
+                            </div>
+                        </div>
+                        <canvas id="pdfCanvas" style="display: none;"></canvas>
+                    </div>
+                </div>
+
+                <div class="loading-indicator" id="loadingIndicator" style="display: none;">
+                    <div class="spinner"></div>
+                    <p>Cargando documento...</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="products-info">
+            <div class="container">
+                <div class="info-grid">
+                    <div class="info-card">
+                        <h3>Especificaciones Técnicas</h3>
+                        <p>Todos nuestros productos cumplen con las normas y especificaciones técnicas internacionales más exigentes.</p>
+                    </div>
+                    <div class="info-card">
+                        <h3>Personalización</h3>
+                        <p>Fabricamos productos según planos y especificaciones del cliente, adaptándonos a necesidades específicas.</p>
+                    </div>
+                    <div class="info-card">
+                        <h3>Control de Calidad</h3>
+                        <p>Rigurosos controles de calidad en cada etapa del proceso de fabricación garantizan la máxima confiabilidad.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer" id="contacto">
+      <div class="container">
+        <div class="footer-content">
+          <div class="footer-section">
+            <h3>Viloide SRL</h3>
+            <p>Especialistas en bulonería de alta resistencia para la industria energética y pesada.</p>
+          </div>
+          <div class="footer-section">
+            <h4>Navegación</h4>
+            <ul class="footer-nav">
+              <li><a href="index.html">Inicio</a></li>
+              <li><a href="index.html#sobre-nosotros">Sobre Nosotros</a></li>
+              <li><a href="index.html#servicios">Servicios</a></li>
+              <li><a href="productos.html">Catálogo</a></li>
+              <li><a href="index.html#contacto-form">Contacto</a></li>
+            </ul>
+          </div>
+          <div class="footer-section">
+            <h4>Contacto</h4>
+            <p>Email: info@viloide.com</p>
+            <p>Teléfono: +54 11 1234-5678</p>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p>&copy; 2025 Viloide SRL. Todos los derechos reservados.</p>
+        </div>
+      </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script src="productos.js"></script>
+</body>
+</html>
