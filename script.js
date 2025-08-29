@@ -1,30 +1,46 @@
 // Navegación móvil
 const navToggle = document.querySelector('.nav-toggle');
-const navMenu = document.querySelector('.nav-menu');
+const navClose = document.querySelector('.nav-close');
+const navMenu = document.querySelector('.navbar');
 const navLinks = document.querySelectorAll('.nav-menu a');
+
+// Función para abrir el menú
+function openMenu() {
+    navToggle.classList.add('active');
+    navMenu.classList.add('visible');
+    document.body.classList.add('nav-open');
+}
+
+// Función para cerrar el menú
+function closeMenu() {
+    navToggle.classList.remove('active');
+    navMenu.classList.remove('visible');
+    document.body.classList.remove('nav-open');
+}
 
 // Toggle del menú móvil
 navToggle.addEventListener('click', () => {
-    navToggle.classList.toggle('active');
-    navMenu.classList.toggle('active');
-    document.body.classList.toggle('nav-open');
+    if (navMenu.classList.contains('visible')) {
+        closeMenu();
+    } else {
+        openMenu();
+    }
 });
+
+// Botón de cerrar menú
+if (navClose) {
+    navClose.addEventListener('click', closeMenu);
+}
 
 // Cerrar menú al hacer click en un enlace
 navLinks.forEach(link => {
-    link.addEventListener('click', () => {
-        navToggle.classList.remove('active');
-        navMenu.classList.remove('active');
-        document.body.classList.remove('nav-open');
-    });
+    link.addEventListener('click', closeMenu);
 });
 
 // Cerrar menú al hacer click fuera de él
 document.addEventListener('click', (e) => {
     if (!navToggle.contains(e.target) && !navMenu.contains(e.target)) {
-        navToggle.classList.remove('active');
-        navMenu.classList.remove('active');
-        document.body.classList.remove('nav-open');
+        closeMenu();
     }
 });
 
@@ -112,31 +128,6 @@ const imageObserver = new IntersectionObserver((entries, observer) => {
 document.querySelectorAll('img[data-src]').forEach(img => {
     imageObserver.observe(img);
 });
-
-// Prevenir scroll cuando el menú móvil está abierto
-const style = document.createElement('style');
-style.textContent = `
-    body.nav-open {
-        overflow: hidden;
-    }
-    
-    .hero-header {
-        transition: all 0.3s ease;
-    }
-    
-    .hero-header.scrolled {
-        background: rgba(7, 51, 74, 0.95);
-        backdrop-filter: blur(20px);
-    }
-    
-
-    
-    .lazy {
-        filter: blur(5px);
-        transition: filter 0.3s;
-    }
-`;
-document.head.appendChild(style);
 
 // Inicialización cuando el DOM está listo
 document.addEventListener('DOMContentLoaded', () => {
