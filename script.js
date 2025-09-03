@@ -52,7 +52,7 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         if (target) {
             const headerHeight = document.querySelector('.hero-header').offsetHeight;
             const targetPosition = target.offsetTop - headerHeight;
-            
+
             window.scrollTo({
                 top: targetPosition,
                 behavior: 'smooth'
@@ -66,7 +66,7 @@ window.addEventListener('scroll', () => {
     const scrolled = window.pageYOffset;
     const hero = document.querySelector('.hero');
     const rate = scrolled * -0.5;
-    
+
     if (hero) {
         hero.style.transform = `translateY(${rate}px)`;
     }
@@ -80,20 +80,20 @@ let lastScrollTop = 0;
 
 window.addEventListener('scroll', () => {
     const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-    
+
     if (scrollTop > 100) {
         header.classList.add('scrolled');
     } else {
         header.classList.remove('scrolled');
     }
-    
+
     // Ocultar/mostrar header al hacer scroll
     if (scrollTop > lastScrollTop && scrollTop > 200) {
         header.style.transform = 'translateY(-100%)';
     } else {
         header.style.transform = 'translateY(0)';
     }
-    
+
     lastScrollTop = scrollTop;
 });
 
@@ -101,11 +101,11 @@ window.addEventListener('scroll', () => {
 function animateCounter(element, target, duration = 2000) {
     let start = 0;
     const increment = target / (duration / 16);
-    
+
     const timer = setInterval(() => {
         start += increment;
         element.textContent = Math.floor(start);
-        
+
         if (start >= target) {
             element.textContent = target;
             clearInterval(timer);
@@ -133,7 +133,7 @@ document.querySelectorAll('img[data-src]').forEach(img => {
 document.addEventListener('DOMContentLoaded', () => {
     // Agregar clase para animaciones CSS
     document.body.classList.add('js-loaded');
-    
+
     // Precargar imágenes críticas
     const criticalImages = ['assets/hero.jpg', 'assets/logo.png'];
     criticalImages.forEach(src => {
@@ -144,7 +144,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Manejo de errores para imágenes
 document.querySelectorAll('img').forEach(img => {
-    img.addEventListener('error', function() {
+    img.addEventListener('error', function () {
         this.style.display = 'none';
         console.warn(`Error cargando imagen: ${this.src}`);
     });
@@ -154,18 +154,18 @@ document.querySelectorAll('img').forEach(img => {
 const clientCarousel = () => {
     const track = document.querySelector('.clients-track');
     const slides = Array.from(document.querySelectorAll('.client-slide'));
-    
+
     if (!track || !slides.length) return;
-    
+
     const slideWidth = slides[0].offsetWidth;
     const totalWidth = slideWidth * slides.length;
-    
+
     // Duplicar slides para efecto infinito
     track.innerHTML += track.innerHTML;
-    
+
     let currentPosition = 0;
     const speed = 1; // px por frame
-    
+
     const animate = () => {
         currentPosition -= speed;
         if (currentPosition <= -totalWidth) {
@@ -174,16 +174,16 @@ const clientCarousel = () => {
         track.style.transform = `translateX(${currentPosition}px)`;
         requestAnimationFrame(animate);
     };
-    
+
     // Pausar al hacer hover
     track.addEventListener('mouseenter', () => {
         speed = 0;
     });
-    
+
     track.addEventListener('mouseleave', () => {
         speed = 1;
     });
-    
+
     animate();
 };
 
@@ -193,7 +193,7 @@ document.addEventListener('DOMContentLoaded', clientCarousel);
 // Performance: Throttle para eventos de scroll
 function throttle(func, limit) {
     let inThrottle;
-    return function() {
+    return function () {
         const args = arguments;
         const context = this;
         if (!inThrottle) {
@@ -211,75 +211,34 @@ const throttledScrollHandler = throttle(() => {
 
 window.addEventListener('scroll', throttledScrollHandler);
 
-// Formulario de contacto
-document.addEventListener('DOMContentLoaded', () => {
-    const contactForm = document.getElementById('contactForm');
-    
-    if (contactForm) {
-        contactForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            
-            // Obtener datos del formulario
-            const formData = new FormData(contactForm);
-            const data = {
-                name: formData.get('name'),
-                email: formData.get('email'),
-                phone: formData.get('phone'),
-                company: formData.get('company'),
-                message: formData.get('message')
-            };
-            
-            // Validación básica
-            if (!data.name || !data.email || !data.message) {
-                alert('Por favor, completá todos los campos obligatorios.');
-                return;
-            }
-            
-            // Simular envío (aquí conectarías con tu backend)
-            const submitBtn = contactForm.querySelector('button[type="submit"]');
-            const originalText = submitBtn.textContent;
-            
-            submitBtn.textContent = 'Enviando...';
-            submitBtn.disabled = true;
-            
-            // Simular delay de envío
-            setTimeout(() => {
-                alert('¡Gracias por tu consulta! Te contactaremos pronto.');
-                contactForm.reset();
-                submitBtn.textContent = originalText;
-                submitBtn.disabled = false;
-            }, 1500);
-        });
-    }
-    
-    // Animaciones para las nuevas secciones
-    const newSectionObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('animate-in');
-            }
-        });
-    }, {
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
+// Animaciones para las nuevas secciones
+const newSectionObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('animate-in');
+        }
     });
-    
-    // Observar elementos de las nuevas secciones
-    document.querySelectorAll('.differentiators-list li, .contact-form, .contact-details, .social-links, .map-container').forEach(el => {
-        newSectionObserver.observe(el);
-    });
+}, {
+    threshold: 0.1,
+    rootMargin: '0px 0px -50px 0px'
 });
+
+// Observar elementos de las nuevas secciones
+document.querySelectorAll('.differentiators-list li, .contact-form, .contact-details, .social-links, .map-container').forEach(el => {
+    newSectionObserver.observe(el);
+});
+
 
 // Pausar carrusel al hacer hover
 document.addEventListener('DOMContentLoaded', () => {
     const carousel = document.querySelector('.clients-carousel');
     const track = document.querySelector('.clients-track');
-    
+
     if (carousel && track) {
         carousel.addEventListener('mouseenter', () => {
             track.style.animationPlayState = 'paused';
         });
-        
+
         carousel.addEventListener('mouseleave', () => {
             track.style.animationPlayState = 'running';
         });
