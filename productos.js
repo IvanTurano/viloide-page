@@ -11,6 +11,7 @@ const ctx = canvas.getContext('2d');
 
 // Elementos del DOM
 const productSelect = document.getElementById('productSelect');
+const infoSelect = document.getElementById('infoSelect');
 const pdfViewer = document.getElementById('pdfViewer');
 const pdfNavigation = document.getElementById('pdfNavigation');
 const loadingIndicator = document.getElementById('loadingIndicator');
@@ -24,24 +25,32 @@ const zoomLevelSpan = document.getElementById('zoomLevel');
 const placeholder = document.querySelector('.pdf-placeholder');
 
 // Event Listeners
-productSelect.addEventListener('change', handleProductChange);
+productSelect.addEventListener('change', handleSelectChange);
+infoSelect.addEventListener('change', handleSelectChange);
 prevPageBtn.addEventListener('click', () => changePage(-1));
 nextPageBtn.addEventListener('click', () => changePage(1));
 zoomInBtn.addEventListener('click', () => changeZoom(0.1));
 zoomOutBtn.addEventListener('click', () => changeZoom(-0.1));
 
-// Función para manejar el cambio de producto
-async function handleProductChange() {
-    const selectedProduct = productSelect.value;
+// Función para manejar el cambio de selección
+async function handleSelectChange(event) {
+    const selectedValue = event.target.value;
     
-    if (!selectedProduct) {
+    // Limpiar el otro selector cuando se selecciona uno
+    if (event.target === productSelect) {
+        infoSelect.value = '';
+    } else if (event.target === infoSelect) {
+        productSelect.value = '';
+    }
+    
+    if (!selectedValue) {
         resetViewer();
         return;
     }
     
     try {
         showLoading(true);
-        await loadPdf(selectedProduct);
+        await loadPdf(selectedValue);
     } catch (error) {
         console.error('Error cargando PDF:', error);
         showError('Error al cargar el documento. Por favor, intente nuevamente.');
