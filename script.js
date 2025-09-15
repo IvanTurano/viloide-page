@@ -243,4 +243,195 @@ document.addEventListener('DOMContentLoaded', () => {
             track.style.animationPlayState = 'running';
         });
     }
+    
+    // Inicializar validaciones del formulario
+    initFormValidation();
 });
+
+// VALIDACIONES DEL FORMULARIO DE CONTACTO
+
+// Función para mostrar errores
+function showError(input, message) {
+    const formGroup = input.parentElement;
+    
+    // Agregar clase de error al form-group
+    formGroup.classList.add('error');
+    formGroup.classList.remove('success');
+    
+    // Mostrar alert con el mensaje de error
+    alert(message);
+}
+
+// Función para limpiar errores
+function clearError(input) {
+    const formGroup = input.parentElement;
+    
+    // Remover clases de error y agregar clase de éxito
+    formGroup.classList.remove('error');
+    formGroup.classList.add('success');
+}
+
+// Validación del nombre
+function validateName(input) {
+    const name = input.value.trim();
+    const nameRegex = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{2,50}$/;
+    
+    if (name === '') {
+        showError(input, 'El nombre es obligatorio');
+        return false;
+    }
+    
+    if (name.length < 2) {
+        showError(input, 'El nombre debe tener al menos 2 caracteres');
+        return false;
+    }
+    
+    if (!nameRegex.test(name)) {
+        showError(input, 'El nombre solo puede contener letras y espacios');
+        return false;
+    }
+    
+    clearError(input);
+    return true;
+}
+
+// Validación del email
+function validateEmail(input) {
+    const email = input.value.trim();
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    
+    if (email === '') {
+        showError(input, 'El email es obligatorio');
+        return false;
+    }
+    
+    if (!emailRegex.test(email)) {
+        showError(input, 'Por favor ingresa un email válido');
+        return false;
+    }
+    
+    clearError(input);
+    return true;
+}
+
+// Validación del teléfono
+function validatePhone(input) {
+    const phone = input.value.trim();
+    const phoneRegex = /^[\d\s\-\+\(\)]{8,20}$/;
+    
+    // El teléfono es opcional, pero si se ingresa debe ser válido
+    if (phone !== '' && !phoneRegex.test(phone)) {
+        showError(input, 'Por favor ingresa un teléfono válido');
+        return false;
+    }
+    
+    clearError(input);
+    return true;
+}
+
+// Validación del mensaje
+function validateMessage(input) {
+    const message = input.value.trim();
+    
+    if (message === '') {
+        showError(input, 'El mensaje es obligatorio');
+        return false;
+    }
+    
+    if (message.length < 10) {
+        showError(input, 'El mensaje debe tener al menos 10 caracteres');
+        return false;
+    }
+    
+    if (message.length > 1000) {
+        showError(input, 'El mensaje no puede exceder los 1000 caracteres');
+        return false;
+    }
+    
+    clearError(input);
+    return true;
+}
+
+// Función principal de validación del formulario
+function validateForm() {
+    const nameInput = document.getElementById('name');
+    const emailInput = document.getElementById('email');
+    const phoneInput = document.getElementById('phone');
+    const messageInput = document.getElementById('message');
+    
+    const isNameValid = validateName(nameInput);
+    const isEmailValid = validateEmail(emailInput);
+    const isPhoneValid = validatePhone(phoneInput);
+    const isMessageValid = validateMessage(messageInput);
+    
+    return isNameValid && isEmailValid && isPhoneValid && isMessageValid;
+}
+
+// Inicializar validaciones del formulario
+function initFormValidation() {
+    const form = document.getElementById('contactForm');
+    
+    if (!form) return;
+    
+    const nameInput = document.getElementById('name');
+    const emailInput = document.getElementById('email');
+    const phoneInput = document.getElementById('phone');
+    const messageInput = document.getElementById('message');
+    
+    // Validación en tiempo real
+    if (nameInput) {
+        nameInput.addEventListener('blur', () => validateName(nameInput));
+        nameInput.addEventListener('input', () => {
+            if (nameInput.parentElement.classList.contains('error')) {
+                validateName(nameInput);
+            }
+        });
+    }
+    
+    if (emailInput) {
+        emailInput.addEventListener('blur', () => validateEmail(emailInput));
+        emailInput.addEventListener('input', () => {
+            if (emailInput.parentElement.classList.contains('error')) {
+                validateEmail(emailInput);
+            }
+        });
+    }
+    
+    if (phoneInput) {
+        phoneInput.addEventListener('blur', () => validatePhone(phoneInput));
+        phoneInput.addEventListener('input', () => {
+            if (phoneInput.parentElement.classList.contains('error')) {
+                validatePhone(phoneInput);
+            }
+        });
+    }
+    
+    if (messageInput) {
+        messageInput.addEventListener('blur', () => validateMessage(messageInput));
+        messageInput.addEventListener('input', () => {
+            if (messageInput.parentElement.classList.contains('error')) {
+                validateMessage(messageInput);
+            }
+        });
+    }
+    
+    // Validación al enviar el formulario
+    form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        
+        if (validateForm()) {
+            // Si todas las validaciones pasan, enviar el formulario
+            form.submit();
+        } else {
+            // Scroll al primer error
+            const firstErrorGroup = form.querySelector('.form-group.error');
+            if (firstErrorGroup) {
+                const firstErrorInput = firstErrorGroup.querySelector('input, textarea');
+                if (firstErrorInput) {
+                    firstErrorInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    firstErrorInput.focus();
+                }
+            }
+        }
+    });
+}
