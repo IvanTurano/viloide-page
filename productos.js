@@ -53,6 +53,7 @@ async function handleSelectChange(event) {
         await loadPdf(selectedValue);
     } catch (error) {
         console.error('Error cargando PDF:', error);
+        console.log('Info:', selectedValue, 'Otro:', productSelect.value);
         showError('Error al cargar el documento. Por favor, intente nuevamente.');
     } finally {
         showLoading(false);
