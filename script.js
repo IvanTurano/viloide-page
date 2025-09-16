@@ -378,39 +378,66 @@ function initFormValidation() {
     const phoneInput = document.getElementById('phone');
     const messageInput = document.getElementById('message');
     
-    // Validación en tiempo real
+    // Solo agregar estilos visuales sin alerts en tiempo real
     if (nameInput) {
-        nameInput.addEventListener('blur', () => validateName(nameInput));
-        nameInput.addEventListener('input', () => {
-            if (nameInput.parentElement.classList.contains('error')) {
-                validateName(nameInput);
+        nameInput.addEventListener('blur', () => {
+            const formGroup = nameInput.parentElement;
+            const name = nameInput.value.trim();
+            const nameRegex = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{2,50}$/;
+            
+            if (name === '' || name.length < 2 || !nameRegex.test(name)) {
+                formGroup.classList.add('error');
+                formGroup.classList.remove('success');
+            } else {
+                formGroup.classList.remove('error');
+                formGroup.classList.add('success');
             }
         });
     }
     
     if (emailInput) {
-        emailInput.addEventListener('blur', () => validateEmail(emailInput));
-        emailInput.addEventListener('input', () => {
-            if (emailInput.parentElement.classList.contains('error')) {
-                validateEmail(emailInput);
+        emailInput.addEventListener('blur', () => {
+            const formGroup = emailInput.parentElement;
+            const email = emailInput.value.trim();
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            
+            if (email === '' || !emailRegex.test(email)) {
+                formGroup.classList.add('error');
+                formGroup.classList.remove('success');
+            } else {
+                formGroup.classList.remove('error');
+                formGroup.classList.add('success');
             }
         });
     }
     
     if (phoneInput) {
-        phoneInput.addEventListener('blur', () => validatePhone(phoneInput));
-        phoneInput.addEventListener('input', () => {
-            if (phoneInput.parentElement.classList.contains('error')) {
-                validatePhone(phoneInput);
+        phoneInput.addEventListener('blur', () => {
+            const formGroup = phoneInput.parentElement;
+            const phone = phoneInput.value.trim();
+            const phoneRegex = /^[\d\s\-\+\(\)]{8,20}$/;
+            
+            if (phone !== '' && !phoneRegex.test(phone)) {
+                formGroup.classList.add('error');
+                formGroup.classList.remove('success');
+            } else {
+                formGroup.classList.remove('error');
+                formGroup.classList.add('success');
             }
         });
     }
     
     if (messageInput) {
-        messageInput.addEventListener('blur', () => validateMessage(messageInput));
-        messageInput.addEventListener('input', () => {
-            if (messageInput.parentElement.classList.contains('error')) {
-                validateMessage(messageInput);
+        messageInput.addEventListener('blur', () => {
+            const formGroup = messageInput.parentElement;
+            const message = messageInput.value.trim();
+            
+            if (message === '' || message.length < 10 || message.length > 1000) {
+                formGroup.classList.add('error');
+                formGroup.classList.remove('success');
+            } else {
+                formGroup.classList.remove('error');
+                formGroup.classList.add('success');
             }
         });
     }
